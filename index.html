@@ -80,19 +80,27 @@ body * {
 
 
 <script>
+var bounds = [
+    [-74.04728500751165, 40.68392799015035], // Southwest coordinates
+    [-73.91058699000139, 40.87764500765852]  // Northeast coordinates
+];
+
+
 mapboxgl.accessToken = 'pk.eyJ1IjoiYmlhbmNoaTE5NzYiLCJhIjoiY2lnb2ltenA5MDA0ZHY2a294aDMwYzNtNiJ9.XqFNNz5LG3qRyXvYu7CTaA';;
 var beforeMap = new mapboxgl.Map({
     container: 'before',
     style: 'mapbox://styles/mapbox/light-v9',
-    center: [0, 0],
-    zoom: 0
+    center: [-73.9978, 40.7209],
+    zoom: 13,
+    maxBounds: bounds // Sets bounds as max
 });
 
 var afterMap = new mapboxgl.Map({
     container: 'after',
     style: 'mapbox://styles/mapbox/dark-v9',
-    center: [0, 0],
-    zoom: 0
+    center: [-73.9978, 40.7209],
+    zoom: 13,
+    maxBounds: bounds // Sets bounds as max
 });
 
 var map = new mapboxgl.Compare(beforeMap, afterMap, {
