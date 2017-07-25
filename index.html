@@ -81,8 +81,8 @@ body * {
 
 <script>
 var bounds = [
-    [25.35171471394139,39.23164601765629], // Southwest coordinates
-    [29.35171471394139,44.23164601765629]  // Northeast coordinates
+    [23.35171471394139,39.23164601765629], // Southwest coordinates
+    [32.35171471394139,43.23164601765629]  // Northeast coordinates
 ];
 
 var centerit = [27.35171471394139,41.23164601765629]
@@ -93,7 +93,7 @@ var beforeMap = new mapboxgl.Map({
     container: 'before',
     style: 'mapbox://styles/mapbox/light-v9',
     center: centerit,
-    zoom: 7,
+    zoom: 8,
     maxBounds: bounds // Sets bounds as max
 });
 
@@ -101,7 +101,7 @@ var afterMap = new mapboxgl.Map({
     container: 'after',
     style: 'mapbox://styles/mapbox/satellite-v9',
     center: centerit,
-    zoom: 7,
+    zoom: 8,
     maxBounds: bounds // Sets bounds as max
 });
 
