@@ -91,19 +91,46 @@ var centerit = [27.35171471394139,41.23164601765629]
 mapboxgl.accessToken = 'pk.eyJ1IjoiYmlhbmNoaTE5NzYiLCJhIjoiY2lnb2ltenA5MDA0ZHY2a294aDMwYzNtNiJ9.XqFNNz5LG3qRyXvYu7CTaA';;
 var beforeMap = new mapboxgl.Map({
     container: 'before',
-    style: 'mapbox://styles/mapbox/light-v9',
-    center: centerit,
-    zoom: 8,
-    maxBounds: bounds // Sets bounds as max
-});
-
-var afterMap = new mapboxgl.Map({
-    container: 'after',
     style: 'mapbox://styles/mapbox/satellite-v9',
     center: centerit,
-    zoom: 8,
-    maxBounds: bounds // Sets bounds as max
+    zoom: 8
+    // maxBounds: bounds // Sets bounds as max
 });
+
+// var afterMap = new mapboxgl.Map({
+//     container: 'after',
+//     style: 'mapbox://styles/mapbox/satellite-v9',
+//     center: centerit,
+//     zoom: 8,
+//     maxBounds: bounds // Sets bounds as max
+// });
+
+// bianchi1976.6w91pb4h
+
+var afterMap = new mapboxgl.Map({
+    container: 'after', // container id
+    style: {
+        "version": 8,
+        "sources": {
+            "raster-tiles": {
+                "type": "raster",
+                "url": "mapbox://" + 'bianchi1976.9hth6mt7',
+                "tileSize": 256
+            }
+        },
+        "layers": [{
+            "id": "simple-tiles",
+            "type": "raster",
+            "source": "raster-tiles",
+            // "minzoom": 0,
+            // "maxzoom": 22
+        }]
+    },
+    center: [-74.50, 40], // starting position
+    zoom: 8 // starting zoom
+});
+
+
 
 var map = new mapboxgl.Compare(beforeMap, afterMap, {
     // Set this to enable comparing two maps by mouse movement:
@@ -122,3 +149,4 @@ beforeMap.addControl(new mapboxgl.ScaleControl({
 
 </body>
 </html>
+
