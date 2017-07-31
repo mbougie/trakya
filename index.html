@@ -7,12 +7,28 @@
     <meta charset='utf-8' />
     <title></title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.css' rel='stylesheet' />
-
+    <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.css' type='text/css' />
 </head>
 <body>
+
+
+<div id='before' class='map'></div>
+<div id='after' class='map'></div>
+
+
+<!-- add html elements to the legend !-->
+<div id='legend' class='legend'>
+    <h4>landcover</h4>
+    <div><span style='background-color: yellow'></span>agriculture</div>
+    <div><span style='background-color: #339933'></span>forest</div>
+    <div><span style='background-color: #1affa3'></span>grassland</div>
+    <div><span style='background-color: blue'></span>water</div>
+    <div><span style='background-color: red'></span>urban</div>
+  </div>
+
+
+
 
 <style>
 body {
@@ -72,33 +88,14 @@ a.mapboxgl-ctrl-logo {
 
 
 </style>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.js'></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.js'></script>
-<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.css' type='text/css' />
-
-<div id='before' class='map'></div>
-<div id='after' class='map'></div>
 
 
-<!-- add html elements to the legend !-->
-<div id='legend' class='legend'>
-    <h4>landcover</h4>
-    <div><span style='background-color: yellow'></span>agriculture</div>
-    <div><span style='background-color: #339933'></span>forest</div>
-    <div><span style='background-color: #1affa3'></span>grassland</div>
-    <div><span style='background-color: blue'></span>water</div>
-    <div><span style='background-color: red'></span>urban</div>
-  </div>
+
 
 
 <script>
-// var bounds = [
-//     [-90.787, 42.7844], // Southwest coordinates
-//     [-86.787, 45.7844]  // Northeast coordinates
-// ];
-
-// var centerit = [-88.787, 43.7844]
-
-
 
 var bounds = [
     [27.30,41.05], // Southwest coordinates
@@ -116,15 +113,6 @@ var beforeMap = new mapboxgl.Map({
     maxBounds: bounds // Sets bounds as max
 });
 
-// var afterMap = new mapboxgl.Map({
-//     container: 'after',
-//     style: 'mapbox://styles/mapbox/satellite-v9',
-//     center: centerit,
-//     zoom: 8,
-//     maxBounds: bounds // Sets bounds as max
-// });
-
-// bianchi1976.6w91pb4h
 
 var afterMap = new mapboxgl.Map({
     container: 'after', // container id
