@@ -54,4 +54,4 @@ a.mapboxgl-ctrl-logo {
 /*remove mapbox link in small screan size---was glitchy so removed*/
 .mapboxgl-ctrl-attrib.mapboxgl-compact:after {
       content: none;
-  }
+}
