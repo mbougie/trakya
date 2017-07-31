@@ -1,36 +1,19 @@
-
-
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset='utf-8' />
-    <title></title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.css' rel='stylesheet' />
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/bootstrap.css">
+      <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.css' rel='stylesheet' />
     <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.css' type='text/css' />
+  <title>Bootstrap</title>
 </head>
 <body>
 
+  <style>
 
-<div id='before' class='map'></div>
-<div id='after' class='map'></div>
-
-
-<!-- add html elements to the legend !-->
-<div id='legend' class='legend'>
-    <h4>landcover</h4>
-    <div><span style='background-color: yellow'></span>agriculture</div>
-    <div><span style='background-color: #339933'></span>forest</div>
-    <div><span style='background-color: #1affa3'></span>grassland</div>
-    <div><span style='background-color: blue'></span>water</div>
-    <div><span style='background-color: red'></span>urban</div>
-  </div>
-
-
-
-
-<style>
 body {
     margin: 0px;
     overflow: hidden;
@@ -43,23 +26,6 @@ body * {
          -ms-user-select: none;
              user-select: none;
 }
-
-.map {
-    position: absolute;
-    top: 100px;
-    bottom: 0;
-    width: 100%;
-/*     z-index: -1;*/
-
-}
-
-/*remove mapbox logo from map*/
-a.mapboxgl-ctrl-logo {
-    width: 0px;
-    height: 0px;
-}
-
-
 
 
 .legend {
@@ -86,14 +52,82 @@ a.mapboxgl-ctrl-logo {
   width: 10px;
 }
 
+.map {
+    position: absolute;
+    top: 0vh;
+    bottom: 0;
+    width: 100%;
+/*     z-index: -1;*/
 
-</style>
+}
+
+/*remove mapbox logo from map*/
+a.mapboxgl-ctrl-logo {
+    width: 0px;
+    height: 0px;
+}
+  </style>
+
+
+
+<!-- <div id="map" style="width: 600px; height: 400px"></div> -->
+  <div class="container-fluid" id="services">
+
+<!-- ROW 1 -->
+  <div class="row bg-info" style="height: 10vh;">
+    <section class="col">
+      <h4>title and nav-bar</h4>
+      <p>Add stuff here!</p>
+
+  </div><!-- row -->
+
+<!-- ROW 2 -->
+  <div class="row bg-warning" style="height: 90vh;">
+    <div class="col-3" style="height: 100%; background-color: red;">
+      <h4>side bar</h4>
+      <p>Add stuff here!</p>
+    </div>
+    <div class="col-9" style="height: 100%; background-color: blue;">
+    <div class='row'>
+      <div id='before' class= "map"></div>
+      <div id='after' class= "map"></div> 
+    </div>
+    </div><!-- column -->
+
+<!--     <div class='row'>
+    <section id='before' class="col-9 map" style="height: 100%; "></section>
+    <section id='after' class="col-9 map" style="height: 100%; "></section> 
+    </div> -->
+
+  </div><!-- row -->
+
+
+
+
+<!-- 
+<div id='before' class='map'></div>
+<div id='after' class='map'></div> -->
+
+
+<!-- add html elements to the legend !-->
+<div id='legend' class='legend'>
+    <h4>landcover</h4>
+    <div><span style='background-color: yellow'></span>agriculture</div>
+    <div><span style='background-color: #339933'></span>forest</div>
+    <div><span style='background-color: #1affa3'></span>grassland</div>
+    <div><span style='background-color: blue'></span>water</div>
+    <div><span style='background-color: red'></span>urban</div>
+</div>
+
+
+</div><!-- container -->
+<!-- testing here for github temp  !!!! -->
+<script src="js/jquery.slim.min.js"></script>
+<script src="js/tether.min.js"></script>
+<script src="js/bootstrap.js"></script>
+<script src="js/scripts.js"></script>
 <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.js'></script>
 <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.js'></script>
-
-
-
-
 
 <script>
 
@@ -154,7 +188,9 @@ beforeMap.addControl(new mapboxgl.ScaleControl({
 
 
 </script>
-
 </body>
 </html>
+
+
+
 
