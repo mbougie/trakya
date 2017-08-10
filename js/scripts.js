@@ -1,56 +1,57 @@
+ var minZoom =  0.0 ;
+    var maxZoom =  16.0 ;
+    var tilePrefix = 'https:\/\/storage.googleapis.com\/trakya\/trakya_example\/';
+    var tileSuffix = '';
+    var latLngBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng( 40.96543596172361 ,  27.260513305664062 ),
+        new google.maps.LatLng( 41.18181216895267 ,  27.645034790039066 ));
 
-var bounds = [
-    [27.30,41.05], // Southwest coordinates
-    [27.60,41.15]  // Northeast coordinates
-];
-var centerit = [27.40,41.10]
-
-
-mapboxgl.accessToken = 'pk.eyJ1IjoiYmlhbmNoaTE5NzYiLCJhIjoiY2lnb2ltenA5MDA0ZHY2a294aDMwYzNtNiJ9.XqFNNz5LG3qRyXvYu7CTaA';;
-var beforeMap = new mapboxgl.Map({
-    container: 'before',
-    style: 'mapbox://styles/mapbox/satellite-v9',
-    center: centerit,
-    zoom: 12,
-    maxBounds: bounds // Sets bounds as max
-});
-
-
-var afterMap = new mapboxgl.Map({
-    container: 'after', // container id
-    style: {
-        "version": 8,
-        "sources": {
-            "raster-tiles": {
-                "type": "raster",
-                "url": "mapbox://" + 'bianchi1976.1m9wz1s5',
-                "tileSize": 256
-            }
+    function initialize() {
+      var mapOptions = {
+          minZoom: minZoom,
+          maxZoom: maxZoom,
+          mapTypeId: 'satellite',
+            // mapTypeControl: true,
+            mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+            position: google.maps.ControlPosition.TOP_RIGHT,
+            mapTypeIds: ['satellite', 'roadmap']
+            },
+          zoomControl: true,
+          zoomControlOptions: {
+              position: google.maps.ControlPosition.TOP_LEFT
+          },
+          scaleControl: true,
+          streetViewControl: false
+      };
+      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      map.fitBounds(latLngBounds);
+      var overlayMapType = new google.maps.ImageMapType({
+        getTileUrl: function(coord, zoom) {
+          if (zoom < minZoom || zoom > maxZoom) {
+            return null;
+          }
+          var numTiles = 1 << zoom;
+          var x = ((coord.x % numTiles) + numTiles) % numTiles;
+          return [tilePrefix, zoom, '/', x, '/', coord.y, tileSuffix].join('');
         },
-        "layers": [{
-            "id": "simple-tiles",
-            "type": "raster",
-            "source": "raster-tiles",
-            // "minzoom": 0,
-            // "maxzoom": 22
-        }]
-    },
-    center: centerit, // starting position
-    zoom: 12, // starting zoom
-    maxBounds: bounds // Sets bounds as max
-});
+        tileSize: new google.maps.Size(256, 256),
+      });
+      map.overlayMapTypes.push(overlayMapType);
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
 
 
 
-var map = new mapboxgl.Compare(beforeMap, afterMap, {
-    // Set this to enable comparing two maps by mouse movement:
-    // mousemove: true
-});
-
-// add scale
-beforeMap.addControl(new mapboxgl.ScaleControl({
-    maxWidth: 80,
-    unit: 'imperial',
-    position: 'bottom-left'
-}));
-
+// function initMap() {
+//         var map = new google.maps.Map(document.getElementById('map'), {
+//           zoom: 4,
+//           center: {lat: -33, lng: 151},
+//           mapTypeControl: true,
+//           mapTypeControlOptions: {
+//             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+//             mapTypeIds: ['satellite', 'terrain']
+//           }
+//         });
+//       }

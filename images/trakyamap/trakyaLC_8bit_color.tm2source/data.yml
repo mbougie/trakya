@@ -1,0 +1,25 @@
+_prefs: 
+  disabled: []
+  inspector: false
+  mapid: bianchi76.be44c110
+  rev: s-a85431d6
+  saveCenter: true
+attribution: ''
+center: 
+  - 27.4528
+  - 41.0737
+  - 11
+description: ''
+Layer: 
+  - id: trakyaLC_8bit_color
+    Datasource: 
+      file: "c:/Users/bougie/Desktop/mutlu/projects/images/trakyamap\\trakyaLC_8bit_color.tif"
+      type: gdal
+    description: ''
+    fields: {}
+    properties: 
+      "buffer-size": 0
+    srs: +proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs
+maxzoom: 16
+minzoom: 0
+name: test

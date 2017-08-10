@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE Map[]>
+<Map srs="+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0.0 +k=1.0 +units=m +nadgrids=@null +wktext +no_defs +over">
+
+<Parameters>
+  <Parameter name="center">27.4646,41.0614,12</Parameter>
+  <Parameter name="format">webp</Parameter>
+  <Parameter name="json"><![CDATA[{}]]></Parameter>
+  <Parameter name="maxzoom">16</Parameter>
+  <Parameter name="minzoom">0</Parameter>
+</Parameters>
+
+
+<Style name="trakyaLC_8bit_color" filter-mode="first">
+  <Rule>
+    <RasterSymbolizer opacity="1" scaling="bilinear" />
+  </Rule>
+</Style>
+<Layer name="trakyaLC_8bit_color"
+  buffer-size="0"
+  srs="+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs">
+    <StyleName>trakyaLC_8bit_color</StyleName>
+    <Datasource>
+       <Parameter name="file"><![CDATA[c:/Users/bougie/Desktop/mutlu/projects/images/trakyamap\trakyaLC_8bit_color.tif]]></Parameter>
+       <Parameter name="type"><![CDATA[gdal]]></Parameter>
+    </Datasource>
+  </Layer>
+
+</Map>
