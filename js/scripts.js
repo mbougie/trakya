@@ -10,6 +10,19 @@
       var mapOptions = {
           minZoom: minZoom,
           maxZoom: maxZoom,
+          mapTypeId: 'satellite',
+            // mapTypeControl: true,
+            mapTypeControlOptions: {
+            style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+            position: google.maps.ControlPosition.TOP_RIGHT,
+            mapTypeIds: ['satellite', 'roadmap']
+            },
+          zoomControl: true,
+          zoomControlOptions: {
+              position: google.maps.ControlPosition.TOP_LEFT
+          },
+          scaleControl: true,
+          streetViewControl: false
       };
       var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       map.fitBounds(latLngBounds);
@@ -28,3 +41,17 @@
     }
 
     google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+// function initMap() {
+//         var map = new google.maps.Map(document.getElementById('map'), {
+//           zoom: 4,
+//           center: {lat: -33, lng: 151},
+//           mapTypeControl: true,
+//           mapTypeControlOptions: {
+//             style: google.maps.MapTypeControlStyle.DROPDOWN_MENU,
+//             mapTypeIds: ['satellite', 'terrain']
+//           }
+//         });
+//       }
