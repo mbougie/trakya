@@ -10,12 +10,38 @@
 </head>
 <body>
     <div id="map" style="width: 600px; height: 400px"></div>
+     <script src="states.js"></script>
     <script src="iowa_counties.js"></script>
     <script src="leaflet/leaflet.js"></script>
 
+<style>
+.info {
+    padding: 6px 8px;
+    font: 14px/16px Arial, Helvetica, sans-serif;
+    background: white;
+    background: rgba(255,255,255,0.8);
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 5px;
+}
+.info h4 {
+    margin: 0 0 5px;
+    color: #777;
+}
+
+</style>
+
+
+
+
+
+
+
+
+
+
 
     <script>
-        var map = L.map('map').setView([41,-92], 8);
+        var map = L.map('map').setView([41,-92], 4);
          // 40.96543596172361 ,  27.260513305664062 
         // mapLink = 
         //     '<a href="http://openstreetmap.org">OpenStreetMap</a>';
@@ -71,7 +97,7 @@ function style(feature) {
         fillOpacity: 0.7
     };
 }
-
+L.geoJson(states).addTo(map);
 L.geoJson(plants, {style: style}).addTo(map);
 
 
@@ -86,6 +112,8 @@ function highlightFeature(e) {
         fillOpacity: 0.7
     });
 
+    info.update(layer.feature.properties)
+
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
         layer.bringToFront();
     }
@@ -94,6 +122,8 @@ function highlightFeature(e) {
 
 function resetHighlight(e) {
     geojson.resetStyle(e.target);
+    info.update();
+     
 }
 
 var geojson;
@@ -119,6 +149,27 @@ geojson = L.geoJson(plants, {
     style: style,
     onEachFeature: onEachFeature
 }).addTo(map);
+
+
+
+
+
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Percentage Corn</h4>' +  (props ?
+        '<b>County: ' + props.ATLAS_NAME + '</b><br />' + props.CORN_PERC + '%</sup>'
+        : 'Hover over a state');
+};
+
+info.addTo(map);
 
     </script>
 </body>
