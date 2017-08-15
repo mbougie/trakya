@@ -1,0 +1,1 @@
+gdal2tiles -z 0-18 C:\Users\bougie\Desktop\mutlu\projects\rasters\cdl_clu85_wgs.tif C:\Users\bougie\Desktop\mutlu\projects\tiles

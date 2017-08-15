@@ -1,56 +1,124 @@
-
-var bounds = [
-    [27.30,41.05], // Southwest coordinates
-    [27.60,41.15]  // Northeast coordinates
-];
-var centerit = [27.40,41.10]
-
-
-mapboxgl.accessToken = 'pk.eyJ1IjoiYmlhbmNoaTE5NzYiLCJhIjoiY2lnb2ltenA5MDA0ZHY2a294aDMwYzNtNiJ9.XqFNNz5LG3qRyXvYu7CTaA';;
-var beforeMap = new mapboxgl.Map({
-    container: 'before',
-    style: 'mapbox://styles/mapbox/satellite-v9',
-    center: centerit,
-    zoom: 12,
-    maxBounds: bounds // Sets bounds as max
+var map = L.map('map', {
 });
 
 
-var afterMap = new mapboxgl.Map({
-    container: 'after', // container id
-    style: {
-        "version": 8,
-        "sources": {
-            "raster-tiles": {
-                "type": "raster",
-                "url": "mapbox://" + 'bianchi1976.1m9wz1s5',
-                "tileSize": 256
-            }
-        },
-        "layers": [{
-            "id": "simple-tiles",
-            "type": "raster",
-            "source": "raster-tiles",
-            // "minzoom": 0,
-            // "maxzoom": 22
-        }]
-    },
-    center: centerit, // starting position
-    zoom: 12, // starting zoom
-    maxBounds: bounds // Sets bounds as max
-});
+map.setView([41,-92], 4);
+
+
+function getColor(perc) {
+    return perc > 0.70 ? '#800026' :
+           perc> 0.60  ? '#BD0026' :
+           perc > 0.50  ? '#E31A1C' :
+           perc > 0.40  ? '#FC4E2A' :
+           perc > 0.30   ? '#FD8D3C' :
+           perc > 0.20   ? '#FEB24C' :
+           perc > 0.10   ? '#FED976' :
+                      '#FFEDA0';
+}
+
+
+function style(feature) {
+    return {
+        fillColor: getColor(feature.properties.CORN_PERC),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 0.7
+    };
+}
+L.geoJson(states).addTo(map);
 
 
 
-var map = new mapboxgl.Compare(beforeMap, afterMap, {
-    // Set this to enable comparing two maps by mouse movement:
-    // mousemove: true
-});
 
-// add scale
-beforeMap.addControl(new mapboxgl.ScaleControl({
-    maxWidth: 80,
-    unit: 'imperial',
-    position: 'bottom-left'
-}));
+function highlightFeature(e) {
+    var layer = e.target;
 
+    layer.setStyle({
+        weight: 5,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+
+    info.update(layer.feature.properties)
+
+    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+        layer.bringToFront();
+    }
+}
+
+
+function resetHighlight(e) {
+    geojson.resetStyle(e.target);
+    info.update();
+     
+}
+
+var geojson;
+
+var plantit;
+function zoomToFeature(e) {
+    map.fitBounds(e.target.getBounds());
+    console.log(e.target.getBounds().getCenter())
+    console.log(e.target.feature.properties.st_abbrev)
+
+    console.log(map.hasLayer(plantit))
+    if (map.hasLayer(plantit)){
+        map.removeLayer(plantit)
+    }
+    if (e.target.feature.properties.st_abbrev === 'IA'){
+        plantit=L.geoJson(plants, {style: style,onEachFeature: onEachFeature_county}).addTo(map);
+    }
+    
+}
+
+function zoomToFeature_county(e) {
+    console.log(map.getZoom())
+    // map.fitBounds(e.target.getBounds())
+    // map.options.maxZoom(22)
+}
+
+
+function onEachFeature_state(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature
+    });
+}
+
+function onEachFeature_county(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature_county
+    });
+}
+
+geojson = L.geoJson(states, {
+    style: style,
+    onEachFeature: onEachFeature_state
+}).addTo(map);
+
+
+
+
+
+var info = L.control();
+
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+    this.update();
+    return this._div;
+};
+
+// method that we will use to update the control based on feature properties passed
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Percentage Corn</h4>' +  (props ?
+        '<b>County: ' + props.ATLAS_NAME + '</b><br />' + props.CORN_PERC + '%</sup>'
+        : 'Hover over a state');
+};
+
+info.addTo(map);
