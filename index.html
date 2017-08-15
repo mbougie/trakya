@@ -1,20 +1,19 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
     <title>Simple Leaflet Map</title>
     <meta charset="utf-8" />
-    <link 
-        rel="stylesheet" 
-        href="leaflet/leaflet.css"
-    />
-</head>
-<body>
-    <div id="map" style="width: 600px; height: 400px"></div>
-     <script src="states.js"></script>
-    <script src="iowa_counties.js"></script>
-    <script src="leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="leaflet/leaflet.css"/>
+</head> -->
 
-<style>
+
+<!-- <body>
+    <div id="map" style="width: 600px; height: 400px"></div> -->
+<!--      <script src="states.js"></script>
+    <script src="iowa_counties.js"></script>
+    <script src="leaflet/leaflet.js"></script> -->
+
+<!-- <style>
 .info {
     padding: 6px 8px;
     font: 14px/16px Arial, Helvetica, sans-serif;
@@ -28,173 +27,76 @@
     color: #777;
 }
 
-</style>
+</style> -->
 
 
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="leaflet/leaflet.css"/>
+<!--   <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.css' rel='stylesheet' />
+  <link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.css' type='text/css' /> -->
+  <link rel="stylesheet" href="css/styles.css">
+  <title>Trakya</title>
+</head>
+
+<body>
+<!--      <div id="map" style="width: 600px; height: 400px"></div> -->
+  <!-- <div id="map" style="width: 600px; height: 400px"></div> -->
+  <div class="container-fluid" id="services">
+
+    <!-- ROW 1 -->
+    <div class="row" style="height: 10vh; background-color: #F5F3EE;">
+      <div class="col">
+        <!-- <h4>title and nav-bar</h4> -->
+        <!-- <p>Add stuff here!</p> -->
+      </div><!-- class -->
+    </div><!-- row -->
+
+    <!-- ROW 2 -->
+    <div class="row" style="height: 90vh;">
+      <div class="col-3" style="height: 100%; background-color: #3887be;">
+        <!-- <h4>side bar</h4> -->
+        <!-- <p>Add stuff here!</p> -->
+      </div>
+      <div class="col-9" style="height: 100%;">
+        <div class='row'>
+          <div id="map" ></div>
+        </div>
+      </div><!-- column -->
+    </div><!-- row -->
 
 
+    <!-- add html elements to the legend !-->
+    <div id='legend' class='legend'>
+      <h4>landcover</h4>
+      <div><span style='background-color: yellow'></span>agriculture</div>
+      <div><span style='background-color: #339933'></span>forest</div>
+      <div><span style='background-color: #1affa3'></span>grassland</div>
+      <div><span style='background-color: blue'></span>water</div>
+      <div><span style='background-color: red'></span>urban</div>
+    </div>
+  </div><!-- container -->
 
+  <script src="js/jquery.slim.min.js"></script>
+  <script src="js/tether.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+ <!--  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.0/mapbox-gl.js'></script>
+  <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-compare/v0.1.0/mapbox-gl-compare.js'></script> -->
+    <script src="states.js"></script>
+    <script src="iowa_counties.js"></script>
+    <script src="leaflet/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
 
+</html>
 
-
-
-
-    <script>
-        var map = L.map('map', {
-        minZoom: 4,
-        maxZoom: 6
-    });
-
-
-        map.setView([41,-92], 4);
-         // 40.96543596172361 ,  27.260513305664062 
-        // mapLink = 
-        //     '<a href="http://openstreetmap.org">OpenStreetMap</a>';
-        // L.tileLayer('./{z}/{x}/{y}.png', {tms: true, opacity: 1.0, attribution: ""}).addTo(map);
-
-// L.tileLayer('./{z}/{x}/{y}.png', {tms: true, opacity: 0.7, attribution: ""});
-        // create a L.geoJson layer for COAL  
-        // var yo = L.geoJson(plants).addTo(map);
-        
-        // map.on('click', function () {
-        // console.log('fdfdffd')
-        // yo.eachLayer(function(layer) {layer.bindPopup("I am from the click point.");})
-        // });
-
-
-
-// function onEachFeature(feature, layer) {
-//     //bind click
-//     layer.on('click', function (e) {
-//       // e = event
-//       console.log(e); 
-//       geojson.eachLayer(function(layer) {layer.bindPopup("I am from the click point.");})  // style: style,
-
-//       // You can make your ajax call declaration here
-//       //$.ajax(... 
-//     });
-
-// }
-
-// geojson = L.geoJson(plants, {
-//     onEachFeature: onEachFeature
-// }).addTo(map);
-
-function getColor(perc) {
-    return perc > 0.70 ? '#800026' :
-           perc> 0.60  ? '#BD0026' :
-           perc > 0.50  ? '#E31A1C' :
-           perc > 0.40  ? '#FC4E2A' :
-           perc > 0.30   ? '#FD8D3C' :
-           perc > 0.20   ? '#FEB24C' :
-           perc > 0.10   ? '#FED976' :
-                      '#FFEDA0';
-}
-
-
-function style(feature) {
-    return {
-        fillColor: getColor(feature.properties.CORN_PERC),
-        weight: 2,
-        opacity: 1,
-        color: 'white',
-        dashArray: '3',
-        fillOpacity: 0.7
-    };
-}
-L.geoJson(states).addTo(map);
-
-
-
-
-function highlightFeature(e) {
-    var layer = e.target;
-
-    layer.setStyle({
-        weight: 5,
-        color: '#666',
-        dashArray: '',
-        fillOpacity: 0.7
-    });
-
-    info.update(layer.feature.properties)
-
-    if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
-    }
-}
-
-
-function resetHighlight(e) {
-    geojson.resetStyle(e.target);
-    info.update();
-     
-}
-
-var geojson;
-
-var plantit;
-function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
-    console.log(e.target.getBounds().getCenter())
-    console.log(e.target.feature.properties.st_abbrev)
-
-    console.log(map.hasLayer(plantit))
-    if (map.hasLayer(plantit)){
-        map.removeLayer(plantit)
-    }
-    if (e.target.feature.properties.st_abbrev === 'IA'){
-        plantit=L.geoJson(plants, {style: style,onEachFeature: onEachFeature_county}).addTo(map);
-    }
-    
-}
-
-
-
-
-
-function onEachFeature_state(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomToFeature
-    });
-}
-
-function onEachFeature_county(feature, layer) {
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight
-    });
-}
-
-geojson = L.geoJson(states, {
-    style: style,
-    onEachFeature: onEachFeature_state
-}).addTo(map);
-
-
-
-
-
-var info = L.control();
-
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
-
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Percentage Corn</h4>' +  (props ?
-        '<b>County: ' + props.ATLAS_NAME + '</b><br />' + props.CORN_PERC + '%</sup>'
-        : 'Hover over a state');
-};
-
-info.addTo(map);
-
-    </script>
 </body>
 </html>
