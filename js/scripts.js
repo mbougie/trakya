@@ -1,12 +1,15 @@
 // var map = L.map('map', {
 // });
 
-        var map = L.map('map').setView([40.5,-88.7], 6.5);
+        var map = L.map('map').setView([40.5,-88.7], 6);
          // 40.96543596172361 ,  27.260513305664062 
         // mapLink = 
         //     '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         // L.tileLayer('./{z}/{x}/{y}.png', {tms: true, opacity: 1.0, attribution: ""}).addTo(map);
-        L.tileLayer('../tiles/{z}/{x}/{y}.png', {tms: true, opacity: 1.0, attribution: ""}).addTo(map);
+        L.tileLayer('../tiles/{z}/{x}/{y}.png', {tms: true,
+         minZoom: 8,
+         maxZoom: 14
+         }).addTo(map);
 
 
 
@@ -90,7 +93,7 @@ function style_county(feature) {
 // }
 // L.geoJson(states).addTo(map);
 
-
+    console.log(map.getZoom())
 
 
 function highlightFeature_state(e) {
@@ -151,7 +154,8 @@ var geojson;
 
 var plantit;
 function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
+        console.log(map.getZoom())
+    // map.fitBounds(map.getBounds());
     console.log(e.target.getBounds().getCenter())
     console.log(e.target.feature.properties.st_abbrev)
 
@@ -167,9 +171,10 @@ function zoomToFeature(e) {
 
 function zoomToFeature_county(e) {
     console.log(map.getZoom())
+    map.fitBounds(e.target.getBounds());
     map.removeLayer(plantit)
     map.removeLayer(geojson)
-    map.setView([42,-93.5], 11)
+    // map.setView([42,-93.5], 11)
     if(map.getZoom() > 10){
         map.removeLayer(plantit)
         map.removeLayer(geojson)
