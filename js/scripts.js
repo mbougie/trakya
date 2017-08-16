@@ -1,21 +1,48 @@
 // var map = L.map('map', {
 // });
 
-        var map = L.map('map').setView([40.5,-88.7], 6);
+        // var map = L.map('map').setView([40.5,-88.7], 6);
          // 40.96543596172361 ,  27.260513305664062 
         // mapLink = 
         //     '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         // L.tileLayer('./{z}/{x}/{y}.png', {tms: true, opacity: 1.0, attribution: ""}).addTo(map);
-        L.tileLayer('../tiles/{z}/{x}/{y}.png', {tms: true,
-         minZoom: 8,
+// var crop_map = L.tileLayer('../tiles/{z}/{x}/{y}.png', {tms: true,
+//          minZoom: 8,
+//          maxZoom: 14
+//          }),
+
+
+var sattelite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        minZoom: 8,
+                 maxZoom: 14
+    }),
+    crop_map= L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy;  Contributors',
+                   minZoom: 8,
          maxZoom: 14
-         }).addTo(map);
+         });
+
+// var grayscale = L.tileLayer(mapboxUrl, {id: 'MapID', attribution: mapboxAttribution}),
+    
+
+var map = L.map('map', {
+    center: [40.5,-88.7],
+    zoom: 6,
+    layers: [sattelite, crop_map]
+});
 
 
+var baseMaps = {
+    "sattelites": sattelite,
+    "crop map": crop_map
+};
+
+L.control.layers(baseMaps,null,{collapsed:false}).addTo(map);
 
 function getColor_state(state) {
     if (['IA','IL','IN'].indexOf(state) >= 0) {
-    return 'orange'
+    return 'blue'
     }
     else {return '#DCDCDC'}
 }
@@ -39,7 +66,7 @@ function style_state(feature) {
         opacity: 1,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 1.0
     };
 }
 
@@ -50,7 +77,7 @@ function style_county(feature) {
         opacity: 1,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 1.0
     };
 }
 
