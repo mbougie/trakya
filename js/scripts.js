@@ -6,7 +6,7 @@
         // mapLink = 
         //     '<a href="http://openstreetmap.org">OpenStreetMap</a>';
         // L.tileLayer('./{z}/{x}/{y}.png', {tms: true, opacity: 1.0, attribution: ""}).addTo(map);
-        L.tileLayer('../data/{z}/{x}/{y}.png', {tms: true, opacity: 1.0, attribution: ""}).addTo(map);
+        L.tileLayer('../tiles/{z}/{x}/{y}.png', {tms: true, opacity: 1.0, attribution: ""}).addTo(map);
 
 
 
