@@ -1,11 +1,53 @@
+// var map = L.map('map', {
+// });
+
+        // var map = L.map('map').setView([40.5,-88.7], 6);
+         // 40.96543596172361 ,  27.260513305664062 
+        // mapLink = 
+        //     '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        // L.tileLayer('./{z}/{x}/{y}.png', {tms: true, opacity: 1.0, attribution: ""}).addTo(map);
+// var crop_map = L.tileLayer('../tiles/{z}/{x}/{y}.png', {tms: true,
+//          minZoom: 8,
+//          maxZoom: 14
+//          }),
+
+
+var sattelite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        minZoom: 8,
+                 maxZoom: 14
+    }),
+    crop_map= L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy;  Contributors',
+                   minZoom: 8,
+         maxZoom: 14
+         });
+
+// var grayscale = L.tileLayer(mapboxUrl, {id: 'MapID', attribution: mapboxAttribution}),
+    
+
 var map = L.map('map', {
+    center: [40.5,-88.7],
+    zoom: 6,
+    layers: [sattelite, crop_map]
 });
 
 
-map.setView([41,-92], 4);
+var baseMaps = {
+    "sattelites": sattelite,
+    "crop map": crop_map
+};
 
+L.control.layers(baseMaps,null,{collapsed:false}).addTo(map);
 
-function getColor(perc) {
+function getColor_state(state) {
+    if (['IA','IL','IN'].indexOf(state) >= 0) {
+    return 'blue'
+    }
+    else {return '#DCDCDC'}
+}
+
+function getColor_county(perc) {
     return perc > 0.70 ? '#800026' :
            perc> 0.60  ? '#BD0026' :
            perc > 0.50  ? '#E31A1C' :
@@ -17,29 +59,101 @@ function getColor(perc) {
 }
 
 
-function style(feature) {
+function style_state(feature) {
     return {
-        fillColor: getColor(feature.properties.CORN_PERC),
+        fillColor: getColor_state(feature.properties.st_abbrev),
         weight: 2,
         opacity: 1,
         color: 'white',
         dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 1.0
     };
 }
-L.geoJson(states).addTo(map);
+
+function style_county(feature) {
+    return {
+        fillColor: getColor_county(feature.properties.CORN_PERC),
+        weight: 2,
+        opacity: 1,
+        color: 'white',
+        dashArray: '3',
+        fillOpacity: 1.0
+    };
+}
 
 
 
 
-function highlightFeature(e) {
+
+
+
+
+
+
+
+
+
+
+
+
+// function getColor(perc) {
+//     return perc > 0.70 ? '#800026' :
+//            perc> 0.60  ? '#BD0026' :
+//            perc > 0.50  ? '#E31A1C' :
+//            perc > 0.40  ? '#FC4E2A' :
+//            perc > 0.30   ? '#FD8D3C' :
+//            perc > 0.20   ? '#FEB24C' :
+//            perc > 0.10   ? '#FED976' :
+//                       '#FFEDA0';
+// }
+
+
+// function style(feature) {
+//     return {
+//         fillColor: getColor(feature.properties.CORN_PERC),
+//         weight: 2,
+//         opacity: 1,
+//         color: 'white',
+//         dashArray: '3',
+//         fillOpacity: 0.7
+//     };
+// }
+// L.geoJson(states).addTo(map);
+
+    console.log(map.getZoom())
+
+
+function highlightFeature_state(e) {
     var layer = e.target;
+    
+    if (['IA','IL','IN'].indexOf(e.target.feature.properties.st_abbrev) >= 0) {
+    //do something
 
+    
+        layer.setStyle({
+            weight: 5, // if (e.target.feature.properties.st_abbrev === 'IA'){
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 1.0
+        });
+
+        info.update(layer.feature.properties)
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+            layer.bringToFront();
+        }
+   
+    }
+}
+
+function highlightFeature_county(e) {
+    var layer = e.target;
+    
     layer.setStyle({
         weight: 5,
         color: '#666',
         dashArray: '',
-        fillOpacity: 0.7
+        fillOpacity: 1.0
     });
 
     info.update(layer.feature.properties)
@@ -50,7 +164,14 @@ function highlightFeature(e) {
 }
 
 
-function resetHighlight(e) {
+
+function resetHighlight_county(e) {
+    plantit.resetStyle(e.target);
+    info.update();
+     
+}
+
+function resetHighlight_state(e) {
     geojson.resetStyle(e.target);
     info.update();
      
@@ -60,7 +181,8 @@ var geojson;
 
 var plantit;
 function zoomToFeature(e) {
-    map.fitBounds(e.target.getBounds());
+        console.log(map.getZoom())
+    // map.fitBounds(map.getBounds());
     console.log(e.target.getBounds().getCenter())
     console.log(e.target.feature.properties.st_abbrev)
 
@@ -69,36 +191,47 @@ function zoomToFeature(e) {
         map.removeLayer(plantit)
     }
     if (e.target.feature.properties.st_abbrev === 'IA'){
-        plantit=L.geoJson(plants, {style: style,onEachFeature: onEachFeature_county}).addTo(map);
+        plantit=L.geoJson(ia, {style: style_county,onEachFeature: onEachFeature_county}).addTo(map);
     }
     
 }
 
 function zoomToFeature_county(e) {
     console.log(map.getZoom())
+    map.fitBounds(e.target.getBounds());
+    map.removeLayer(plantit)
+    map.removeLayer(geojson)
+    // map.setView([42,-93.5], 11)
+    if(map.getZoom() > 10){
+        map.removeLayer(plantit)
+        map.removeLayer(geojson)
+    }
+        
+    
     // map.fitBounds(e.target.getBounds())
-    // map.options.maxZoom(22)
+    // // map.options.maxZoom(22)
+    //  map.removeLayer(plantit)
 }
 
 
 function onEachFeature_state(feature, layer) {
     layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
+        mouseover: highlightFeature_state,
+        mouseout: resetHighlight_state,
         click: zoomToFeature
     });
 }
 
 function onEachFeature_county(feature, layer) {
     layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
+        mouseover: highlightFeature_county,
+        mouseout: resetHighlight_county,
         click: zoomToFeature_county
     });
 }
 
 geojson = L.geoJson(states, {
-    style: style,
+    style: style_state,
     onEachFeature: onEachFeature_state
 }).addTo(map);
 
