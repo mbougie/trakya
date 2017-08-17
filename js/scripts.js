@@ -12,7 +12,7 @@
 //          }),
 
 
-var sattelite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+var satellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         minZoom: 8,
                  maxZoom: 14
     }),
@@ -29,12 +29,12 @@ var sattelite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services
 var map = L.map('map', {
     center: [40.5,-88.7],
     zoom: 6,
-    layers: [sattelite, crop_map]
+    layers: [satellite, crop_map]
 });
 
 
 var baseMaps = {
-    "sattelites": sattelite,
+    "satellite": satellite,
     "crop map": crop_map
 };
 
