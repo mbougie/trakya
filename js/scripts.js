@@ -10,12 +10,15 @@
 //          minZoom: 8,
 //          maxZoom: 14
 //          }),
+var geojson;
 
+var plantit;
+var toggle;
 
-var sattelite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+var satellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         // minZoom: 8,
         //          maxZoom: 14
-    })
+    });
 var crop_map= L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy;  Contributors',
@@ -24,12 +27,15 @@ var crop_map= L.tileLayer(
          });
 
 // var grayscale = L.tileLayer(mapboxUrl, {id: 'MapID', attribution: mapboxAttribution}),
-    
 
 var map = L.map('map', {
     center: [40.5,-88.7],
     zoom: 6,
-    layers: [crop_map]
+    minZoom: 6,
+    maxZoom: 14,
+    layers: [crop_map],
+    // maxBounds:[[40.712, -74.227],[40.774, -74.125]]
+    wheelPxPerZoomLevel: 150
 });
 
 
@@ -37,15 +43,16 @@ var overlayMaps = {
     "crop map": crop_map
 };
 
-sattelite.addTo(map);
 
-var hoho
+satellite.addTo(map);
+toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
+
 
 function getColor_state(state) {
     if (['IA','IL','IN'].indexOf(state) >= 0) {
     return 'blue'
     }
-    else {return 'black'}
+    else {return 'grey'}
 }
 
 function getColor_county(perc) {
@@ -66,7 +73,6 @@ function style_state(feature) {
         weight: 2,
         opacity: 1,
         color: 'white',
-        dashArray: '3',
         fillOpacity: 1.0
     };
 }
@@ -77,27 +83,42 @@ function style_county(feature) {
         weight: 2,
         opacity: 1,
         color: 'white',
-        dashArray: '3',
         fillOpacity: 1.0
     };
 }
 
 map.on('zoomend', function() {
     console.log(map.getZoom())
-    // if (map.getZoom() <10){
-    //     if (map.hasLayer(points)) {
-    //         map.removeLayer(points);
-    //     } else {
-    //         console.log("no point layer active");
-    //     }
-    // }
-    // if (map.getZoom() >= 10){
-    //     if (map.hasLayer(points)){
-    //         console.log("layer already added");
-    //     } else {
-    //         map.addLayer(points);
-    //     }
-    // }
+  
+    if (map.getZoom() <= 7){
+        map.removeLayer(plantit);
+        if (map.hasLayer(geojson)){
+            console.log("geojson already added");
+        } else {
+            map.addLayer(geojson);
+        }
+    }
+
+     else if (map.getZoom() > 7 && map.getZoom() < 11){
+        map.removeLayer(geojson);
+        console.log(toggle)
+      
+        if (toggle !== undefined){map.removeControl(toggle)}
+        if (map.hasLayer(plantit)) {
+            console.log("plantit already added");
+        } else {
+            // toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
+            plantit=L.geoJson(ia, {
+            style: style_county,onEachFeature: onEachFeature_county
+            }).addTo(map);
+        }
+    }
+
+
+     else if (map.getZoom() >= 11){
+      map.removeLayer(plantit);
+      toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
+          }
 })
 
 // function getColor(perc) {
@@ -181,9 +202,7 @@ function resetHighlight_state(e) {
      
 }
 
-var geojson;
 
-var plantit;
 function zoomToFeature(e) {
         console.log(map.getZoom())
     // map.fitBounds(map.getBounds());
@@ -195,15 +214,15 @@ function zoomToFeature(e) {
         map.removeLayer(plantit)
     }
     if (e.target.feature.properties.st_abbrev === 'IA'){
-        plantit=L.geoJson(ia, {style: style_county,onEachFeature: onEachFeature_county}).addTo(map);
+        
     }
     
 }
 
 function zoomToFeature_county(e) {
-     hoho = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
+     toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
     ////  function to remove/add layer control----it works!!!!
-    //map.removeControl(hoho);
+    //map.removeControl(toggle);
     console.log(map.getZoom())
     map.fitBounds(e.target.getBounds());
     map.removeLayer(plantit)
@@ -224,16 +243,16 @@ function zoomToFeature_county(e) {
 function onEachFeature_state(feature, layer) {
     layer.on({
         mouseover: highlightFeature_state,
-        mouseout: resetHighlight_state,
-        click: zoomToFeature
+        mouseout: resetHighlight_state
+        // click: zoomToFeature
     });
 }
 
 function onEachFeature_county(feature, layer) {
     layer.on({
         mouseover: highlightFeature_county,
-        mouseout: resetHighlight_county,
-        click: zoomToFeature_county
+        mouseout: resetHighlight_county
+        // click: zoomToFeature_county
     });
 }
 
@@ -241,7 +260,6 @@ geojson = L.geoJson(states, {
     style: style_state,
     onEachFeature: onEachFeature_state
 }).addTo(map);
-
 
 
 
