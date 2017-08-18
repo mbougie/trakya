@@ -45,7 +45,7 @@ var overlayMaps = {
 
 
 satellite.addTo(map);
-toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
+
 
 
 function getColor_state(state) {
@@ -81,9 +81,9 @@ function style_county(feature) {
     return {
         fillColor: getColor_county(feature.properties.CORN_PERC),
         weight: 2,
-        opacity: 1,
+        opacity: 0.0,
         color: 'white',
-        fillOpacity: 1.0
+        fillOpacity: 0.0
     };
 }
 
@@ -91,7 +91,7 @@ map.on('zoomend', function() {
     console.log(map.getZoom())
     getVisibleLayer_state();
    getVisibleLayer_county();
-  
+  getVisibleLayer_control();
     // if (map.getZoom() <= 7){
         
     //      if (map.hasLayer(plantit)) {
@@ -125,6 +125,7 @@ map.on('zoomend', function() {
 
 var state_zoom = [6,7,8,9]
 var county_zoom = [8,9]
+var control_zoom = [10,14]
 function getVisibleLayer_state() {
     // console.log(state_zoom.includes(map.getZoom()))
     if(state_zoom.includes(map.getZoom())){
@@ -159,6 +160,8 @@ function getVisibleLayer_county() {
         // geojson.setOpacity(1.0)
         // geojson.resetStyle()
        plantit.setStyle({fillOpacity :1.0})
+       plantit.setStyle({opacity: 1.0})
+   
         // geojson.setStyle({fillColor :'yellow'})
  
         
@@ -168,6 +171,44 @@ function getVisibleLayer_county() {
         // map.removeLayer(geojson)
         // geojson.setOpacity(0.5)
         plantit.setStyle({fillOpacity :0.0})
+        plantit.setStyle({opacity: 0.0})
+
+    }
+    // var car = {type:"Fiat", model:"500", color:"white"};
+}
+
+
+function getVisibleLayer_control() {
+    // console.log(state_zoom.includes(map.getZoom()))
+    if(control_zoom.includes(map.getZoom())){
+      console.log('control in range')
+     
+        console.log('control not here so creating')
+
+       if ($('.leaflet-control-layers-expanded').is(':visible') === false){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
+        // if($('.leaflet-control-layers-expanded').is(':hidden') === true){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
+        // map.addLayer(geojson)
+        // geojson.setOpacity(1.0)
+        // geojson.resetStyle()
+       // plantit.setStyle({fillOpacity :1.0})
+       // plantit.setStyle({opacity: 1.0})
+   
+        // geojson.setStyle({fillColor :'yellow'})
+ 
+        
+    }
+    else{
+        console.log('controly out of range so remove')
+        // map.removeLayer(geojson)
+        // geojson.setOpacity(0.5)
+        // toggle.removeFrom(map);
+
+            
+console.log($('.leaflet-control-layers-expanded').is(':visible'))
+           if($('.leaflet-control-layers-expanded').is(':visible')){toggle.removeFrom(map)}
+        
+        // plantit.setStyle({fillOpacity :0.0})
+        // plantit.setStyle({opacity: 0.0})
 
     }
     // var car = {type:"Fiat", model:"500", color:"white"};
