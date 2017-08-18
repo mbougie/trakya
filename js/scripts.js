@@ -13,10 +13,10 @@
 
 
 var sattelite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        minZoom: 8,
-                 maxZoom: 14
-    }),
-    crop_map= L.tileLayer(
+        // minZoom: 8,
+        //          maxZoom: 14
+    })
+var crop_map= L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy;  Contributors',
                    minZoom: 8,
@@ -29,22 +29,23 @@ var sattelite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services
 var map = L.map('map', {
     center: [40.5,-88.7],
     zoom: 6,
-    layers: [sattelite, crop_map]
+    layers: [crop_map]
 });
 
 
-var baseMaps = {
-    "sattelites": sattelite,
+var overlayMaps = {
     "crop map": crop_map
 };
 
-L.control.layers(baseMaps,null,{collapsed:false}).addTo(map);
+sattelite.addTo(map);
+
+var hoho
 
 function getColor_state(state) {
     if (['IA','IL','IN'].indexOf(state) >= 0) {
     return 'blue'
     }
-    else {return '#DCDCDC'}
+    else {return 'black'}
 }
 
 function getColor_county(perc) {
@@ -81,20 +82,23 @@ function style_county(feature) {
     };
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+map.on('zoomend', function() {
+    console.log(map.getZoom())
+    // if (map.getZoom() <10){
+    //     if (map.hasLayer(points)) {
+    //         map.removeLayer(points);
+    //     } else {
+    //         console.log("no point layer active");
+    //     }
+    // }
+    // if (map.getZoom() >= 10){
+    //     if (map.hasLayer(points)){
+    //         console.log("layer already added");
+    //     } else {
+    //         map.addLayer(points);
+    //     }
+    // }
+})
 
 // function getColor(perc) {
 //     return perc > 0.70 ? '#800026' :
@@ -197,6 +201,9 @@ function zoomToFeature(e) {
 }
 
 function zoomToFeature_county(e) {
+     hoho = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
+    ////  function to remove/add layer control----it works!!!!
+    //map.removeControl(hoho);
     console.log(map.getZoom())
     map.fitBounds(e.target.getBounds());
     map.removeLayer(plantit)
@@ -255,3 +262,9 @@ info.update = function (props) {
 };
 
 info.addTo(map);
+
+
+
+
+
+
