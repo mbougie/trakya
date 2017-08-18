@@ -125,7 +125,7 @@ map.on('zoomend', function() {
 
 var state_zoom = [6,7,8,9]
 var county_zoom = [8,9]
-var control_zoom = [10,14]
+var control_zoom = [10,11,12,13,14]
 function getVisibleLayer_state() {
     // console.log(state_zoom.includes(map.getZoom()))
     if(state_zoom.includes(map.getZoom())){
@@ -136,6 +136,7 @@ function getVisibleLayer_state() {
         // geojson.setOpacity(1.0)
         // geojson.resetStyle()
         geojson.setStyle({fillOpacity :1.0})
+
         // geojson.setStyle({fillColor :'yellow'})
  
         
@@ -161,6 +162,7 @@ function getVisibleLayer_county() {
         // geojson.resetStyle()
        plantit.setStyle({fillOpacity :1.0})
        plantit.setStyle({opacity: 1.0})
+       
    
         // geojson.setStyle({fillColor :'yellow'})
  
@@ -172,6 +174,7 @@ function getVisibleLayer_county() {
         // geojson.setOpacity(0.5)
         plantit.setStyle({fillOpacity :0.0})
         plantit.setStyle({opacity: 0.0})
+
 
     }
     // var car = {type:"Fiat", model:"500", color:"white"};
@@ -186,6 +189,7 @@ function getVisibleLayer_control() {
         console.log('control not here so creating')
 
        if ($('.leaflet-control-layers-expanded').is(':visible') === false){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
+       document.getElementById('legend').style.visibility='visible'
         // if($('.leaflet-control-layers-expanded').is(':hidden') === true){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
         // map.addLayer(geojson)
         // geojson.setOpacity(1.0)
@@ -206,6 +210,7 @@ function getVisibleLayer_control() {
             
 console.log($('.leaflet-control-layers-expanded').is(':visible'))
            if($('.leaflet-control-layers-expanded').is(':visible')){toggle.removeFrom(map)}
+            document.getElementById('legend').style.visibility='hidden'
         
         // plantit.setStyle({fillOpacity :0.0})
         // plantit.setStyle({opacity: 0.0})

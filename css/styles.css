@@ -70,3 +70,8 @@ a.mapboxgl-ctrl-logo {
 }
 
 
+#legend {
+    visibility: hidden;
+}
+
+
