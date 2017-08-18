@@ -72,7 +72,7 @@ function style_state(feature) {
         fillColor: getColor_state(feature.properties.st_abbrev),
         weight: 2,
         opacity: 1,
-        color: 'white',
+        color: 'yellow',
         fillOpacity: 1.0
     };
 }
@@ -90,7 +90,7 @@ function style_county(feature) {
 map.on('zoomend', function() {
     console.log(map.getZoom())
     getVisibleLayer_state();
-    getVisibleLayer_county();
+   getVisibleLayer_county();
   
     // if (map.getZoom() <= 7){
         
@@ -122,24 +122,29 @@ map.on('zoomend', function() {
 
 })
 
+
 var state_zoom = [6,7,8,9]
 var county_zoom = [8,9]
 function getVisibleLayer_state() {
     // console.log(state_zoom.includes(map.getZoom()))
     if(state_zoom.includes(map.getZoom())){
         console.log('state in range')
-        if (map.hasLayer(geojson)) {
-           console.log("plantit already added"); 
-        }
-        else{
+     
         console.log('state not here so creating')
-        map.addLayer(geojson)
-        }
+        // map.addLayer(geojson)
+        // geojson.setOpacity(1.0)
+        // geojson.resetStyle()
+        geojson.setStyle({fillOpacity :1.0})
+        // geojson.setStyle({fillColor :'yellow'})
+ 
         
     }
     else{
         console.log('state out of range so remove')
-        map.removeLayer(geojson)
+        // map.removeLayer(geojson)
+        // geojson.setOpacity(0.5)
+        geojson.setStyle({fillOpacity :0.0})
+
     }
     // var car = {type:"Fiat", model:"500", color:"white"};
 }
@@ -147,24 +152,23 @@ function getVisibleLayer_state() {
 function getVisibleLayer_county() {
     // console.log(state_zoom.includes(map.getZoom()))
     if(county_zoom.includes(map.getZoom())){
-        console.log('county in range')
-        if (map.hasLayer(plantit)) {
-           console.log("county already added"); 
-        }
-        else{
+      console.log('county in range')
+     
         console.log('county not here so creating')
-        // map.addLayer(plantit)
-        plantit=L.geoJson(ia, {
-            style: style_county,onEachFeature: onEachFeature_county
-            }).addTo(map);
-        }
+        // map.addLayer(geojson)
+        // geojson.setOpacity(1.0)
+        // geojson.resetStyle()
+       plantit.setStyle({fillOpacity :1.0})
+        // geojson.setStyle({fillColor :'yellow'})
+ 
         
     }
     else{
         console.log('county out of range so remove')
-        if (map.hasLayer(plantit)){map.removeLayer(plantit)}
-        
-        
+        // map.removeLayer(geojson)
+        // geojson.setOpacity(0.5)
+        plantit.setStyle({fillOpacity :0.0})
+
     }
     // var car = {type:"Fiat", model:"500", color:"white"};
 }
@@ -216,8 +220,8 @@ function highlightFeature_state(e) {
         layer.setStyle({
             weight: 5, // if (e.target.feature.properties.st_abbrev === 'IA'){
             color: '#666',
-            dashArray: '',
-            fillOpacity: 1.0
+            dashArray: ''
+
         });
 
         info.update(layer.feature.properties)
@@ -300,16 +304,16 @@ function zoomToFeature_county(e) {
 
 function onEachFeature_state(feature, layer) {
     layer.on({
-        mouseover: highlightFeature_state,
-        mouseout: resetHighlight_state
+        // mouseover: highlightFeature_state,
+        // mouseout: resetHighlight_state
         // click: zoomToFeature
     });
 }
 
 function onEachFeature_county(feature, layer) {
     layer.on({
-        mouseover: highlightFeature_county,
-        mouseout: resetHighlight_county
+        // mouseover: highlightFeature_county,
+        // mouseout: resetHighlight_county
         // click: zoomToFeature_county
     });
 }
@@ -319,7 +323,9 @@ geojson = L.geoJson(states, {
     onEachFeature: onEachFeature_state
 }).addTo(map);
 
-
+plantit=L.geoJson(ia, {
+            style: style_county,onEachFeature: onEachFeature_county
+            }).addTo(map);
 
 
 var info = L.control();
