@@ -16,13 +16,13 @@ var plantit;
 var toggle;
 
 var satellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        // minZoom: 8,
-        //          maxZoom: 14
+        minZoom: 10,
+                 maxZoom: 14
     });
 var crop_map= L.tileLayer(
             'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy;  Contributors',
-                   minZoom: 8,
+                   minZoom: 10,
          maxZoom: 14
          });
 
@@ -52,7 +52,7 @@ function getColor_state(state) {
     if (['IA','IL','IN'].indexOf(state) >= 0) {
     return 'blue'
     }
-    else {return 'grey'}
+    else {return 'black'}
 }
 
 function getColor_county(perc) {
@@ -89,37 +89,95 @@ function style_county(feature) {
 
 map.on('zoomend', function() {
     console.log(map.getZoom())
+    getVisibleLayer_state();
+    getVisibleLayer_county();
   
-    if (map.getZoom() <= 7){
-        map.removeLayer(plantit);
-        if (map.hasLayer(geojson)){
-            console.log("geojson already added");
-        } else {
-            map.addLayer(geojson);
-        }
-    }
+    // if (map.getZoom() <= 7){
+        
+    //      if (map.hasLayer(plantit)) {
+    //         map.removeLayer(plantit);
+    //     }
+    //     else if (map.hasLayer(geojson)){
+    //         console.log("geojson already added");
+    //     } else {
+    //         map.addLayer(geojson);
+    //     }
+    // }
 
-     else if (map.getZoom() > 7 && map.getZoom() < 11){
-        map.removeLayer(geojson);
-        console.log(toggle)
+    //  else if (map.getZoom() > 7){
+    //     map.removeLayer(geojson);
+    //     // console.log(toggle)
+
+    //     // removeControlifEmpty()
       
-        if (toggle !== undefined){map.removeControl(toggle)}
+    //     if (map.hasLayer(plantit)) {
+    //         console.log("plantit already added");
+    //     } else {
+    //         // toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
+    //         plantit=L.geoJson(ia, {
+    //         style: style_county,onEachFeature: onEachFeature_county
+    //         }).addTo(map);
+    //     }
+    // }
+
+})
+
+var state_zoom = [6,7,8,9]
+var county_zoom = [8,9]
+function getVisibleLayer_state() {
+    // console.log(state_zoom.includes(map.getZoom()))
+    if(state_zoom.includes(map.getZoom())){
+        console.log('state in range')
+        if (map.hasLayer(geojson)) {
+           console.log("plantit already added"); 
+        }
+        else{
+        console.log('state not here so creating')
+        map.addLayer(geojson)
+        }
+        
+    }
+    else{
+        console.log('state out of range so remove')
+        map.removeLayer(geojson)
+    }
+    // var car = {type:"Fiat", model:"500", color:"white"};
+}
+
+function getVisibleLayer_county() {
+    // console.log(state_zoom.includes(map.getZoom()))
+    if(county_zoom.includes(map.getZoom())){
+        console.log('county in range')
         if (map.hasLayer(plantit)) {
-            console.log("plantit already added");
-        } else {
-            // toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
-            plantit=L.geoJson(ia, {
+           console.log("county already added"); 
+        }
+        else{
+        console.log('county not here so creating')
+        // map.addLayer(plantit)
+        plantit=L.geoJson(ia, {
             style: style_county,onEachFeature: onEachFeature_county
             }).addTo(map);
         }
+        
     }
+    else{
+        console.log('county out of range so remove')
+        if (map.hasLayer(plantit)){map.removeLayer(plantit)}
+        
+        
+    }
+    // var car = {type:"Fiat", model:"500", color:"white"};
+}
 
 
-     else if (map.getZoom() >= 11){
-      map.removeLayer(plantit);
-      toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
-          }
-})
+
+
+// function removeControlifEmpty(){
+//     if(map.hasLayer(crop_map)){
+//         console.log(map.hasLayer(crop_map))
+//         map.removeControl(toggle)
+//     }
+// }
 
 // function getColor(perc) {
 //     return perc > 0.70 ? '#800026' :
