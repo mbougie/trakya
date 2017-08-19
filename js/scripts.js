@@ -13,6 +13,7 @@
 var geojson;
 
 var plantit;
+var centroids
 var toggle;
 
 var satellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
@@ -49,10 +50,11 @@ satellite.addTo(map);
 
 
 function getColor_state(state) {
-    if (['IA','IL','IN'].indexOf(state) >= 0) {
-    return 'blue'
-    }
-    else {return 'black'}
+    return 'grey'
+    // if (['IA','IL','IN'].indexOf(state) >= 0) {
+    // return 'blue'
+    // }
+    // else {return 'grey'}
 }
 
 function getColor_county(perc) {
@@ -72,7 +74,7 @@ function style_state(feature) {
         fillColor: getColor_state(feature.properties.st_abbrev),
         weight: 2,
         opacity: 1,
-        color: 'yellow',
+        color: 'white',
         fillOpacity: 1.0
     };
 }
@@ -123,8 +125,8 @@ map.on('zoomend', function() {
 })
 
 
-var state_zoom = [6,7,8,9]
-var county_zoom = [8,9]
+var state_zoom = [6]
+var county_zoom = [7,8,9]
 var control_zoom = [10,11,12,13,14]
 function getVisibleLayer_state() {
     // console.log(state_zoom.includes(map.getZoom()))
@@ -136,7 +138,7 @@ function getVisibleLayer_state() {
         // geojson.setOpacity(1.0)
         // geojson.resetStyle()
         geojson.setStyle({fillOpacity :1.0})
-
+        centroids.setStyle({fillOpacity :0.8})
         // geojson.setStyle({fillColor :'yellow'})
  
         
@@ -146,6 +148,7 @@ function getVisibleLayer_state() {
         // map.removeLayer(geojson)
         // geojson.setOpacity(0.5)
         geojson.setStyle({fillOpacity :0.0})
+        centroids.setStyle({fillOpacity :0.0})
 
     }
     // var car = {type:"Fiat", model:"500", color:"white"};
@@ -364,6 +367,13 @@ function onEachFeature_county(feature, layer) {
     });
 }
 
+function yo(feature) {
+        var layer = e.target;
+}
+
+
+
+
 geojson = L.geoJson(states, {
     style: style_state,
     onEachFeature: onEachFeature_state
@@ -372,6 +382,40 @@ geojson = L.geoJson(states, {
 plantit=L.geoJson(ia, {
             style: style_county,onEachFeature: onEachFeature_county
             }).addTo(map);
+
+
+
+// function takes a value and returns the radius of a circleMarker
+function getRadius(val) {
+    // var radius = Math.sqrt(val / Math.PI);
+    // return radius * .8;
+    return val * 8
+}
+
+
+// create a L.geoJson layer for COAL
+centroids = L.geoJson(centroids, {
+    pointToLayer: function(feature, latlng) {
+        return L.circleMarker(latlng, {
+            // options here
+            color: 'white',
+            fillColor: '#e6e600',
+            weight: 0,
+            stroke: 0,
+            fillOpacity: .8,
+            radius: getRadius(feature.properties.acres_corn)
+        })
+    }
+}).addTo(map);
+
+
+
+
+
+
+
+
+
 
 
 var info = L.control();
@@ -390,6 +434,18 @@ info.update = function (props) {
 };
 
 info.addTo(map);
+
+
+
+ // FeatureGroup is to store editable layers
+     var drawnItems = new L.FeatureGroup();
+     map.addLayer(drawnItems);
+     var drawControl = new L.Control.Draw({
+         edit: {
+             featureGroup: drawnItems
+         }
+     });
+     map.addControl(drawControl);
 
 
 
