@@ -418,22 +418,22 @@ centroids = L.geoJson(centroids, {
 
 
 
-var info = L.control();
+// var info = L.control();
 
-info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
-    this.update();
-    return this._div;
-};
+// info.onAdd = function (map) {
+//     this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+//     this.update();
+//     return this._div;
+// };
 
-// method that we will use to update the control based on feature properties passed
-info.update = function (props) {
-    this._div.innerHTML = '<h4>Percentage Corn</h4>' +  (props ?
-        '<b>County: ' + props.ATLAS_NAME + '</b><br />' + props.CORN_PERC + '%</sup>'
-        : 'Hover over a state');
-};
+// // method that we will use to update the control based on feature properties passed
+// info.update = function (props) {
+//     this._div.innerHTML = '<h4>Percentage Corn</h4>' +  (props ?
+//         '<b>County: ' + props.ATLAS_NAME + '</b><br />' + props.CORN_PERC + '%</sup>'
+//         : 'Hover over a state');
+// };
 
-info.addTo(map);
+// info.addTo(map);
 
 
 
