@@ -52,7 +52,7 @@ var overlayMaps = {
     "crop map": crop_map
 };
 
-toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map)
+// toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map)
 // satellite.addTo(map);
 
 
@@ -101,7 +101,7 @@ map.on('zoomend', function() {
     console.log(map.getZoom())
     getVisibleLayer_state();
    getVisibleLayer_county();
-  // getVisibleLayer_control();
+  getVisibleLayer_control();
     // if (map.getZoom() <= 7){
         
     //      if (map.hasLayer(plantit)) {
@@ -220,7 +220,7 @@ function getVisibleLayer_control() {
      
         console.log('control not here so creating')
 
-       // if ($('.leaflet-control-layers-expanded').is(':visible') === false){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
+       if ($('.leaflet-control-layers-expanded').is(':visible') === false){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
        // document.getElementById('legend').style.visibility='visible'
         // if($('.leaflet-control-layers-expanded').is(':hidden') === true){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
         // map.addLayer(geojson)
@@ -240,9 +240,9 @@ function getVisibleLayer_control() {
         // toggle.removeFrom(map);
 
             
-// console.log($('.leaflet-control-layers-expanded').is(':visible'))
-//            if($('.leaflet-control-layers-expanded').is(':visible')){toggle.removeFrom(map)}
-//             document.getElementById('legend').style.visibility='hidden'
+console.log('control is visible', $('.leaflet-control-layers-expanded').is(':visible'))
+           if($('.leaflet-control-layers-expanded').is(':visible')){map.removeControl(toggle)}
+            // document.getElementById('legend').style.visibility='hidden'
         
         // plantit.setStyle({fillOpacity :0.0})
         // plantit.setStyle({opacity: 0.0})
