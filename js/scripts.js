@@ -138,7 +138,7 @@ function getVisibleLayer_state() {
         // geojson.setOpacity(1.0)
         // geojson.resetStyle()
         geojson.setStyle({fillOpacity :1.0})
-        centroids.setStyle({fillOpacity :0.8})
+        centroids.setStyle({fillOpacity :0.5})
 
 
         map.eachLayer(function(l) {
@@ -428,7 +428,7 @@ centroids = L.geoJson(centroids, {
             fillColor: '#e6e600',
             weight: 0,
             stroke: 0,
-            fillOpacity: .6,
+            fillOpacity: .5,
             radius: getRadius(feature.properties.acres_corn)
         })
         .bindTooltip(labelFunction(feature.properties.acres_corn), 
@@ -472,17 +472,78 @@ centroids = L.geoJson(centroids, {
 
 
 
- // FeatureGroup is to store editable layers
-     var drawnItems = new L.FeatureGroup();
-     map.addLayer(drawnItems);
-     var drawControl = new L.Control.Draw({
-         edit: {
-             featureGroup: drawnItems
-         }
-     });
-     map.addControl(drawControl);
+  var drawnItems = new L.FeatureGroup();
+    map.addLayer(drawnItems);
+
+    // Set the title to show on the polygon button
+    L.drawLocal.draw.toolbar.buttons.polygon = 'Draw a sexy polygon!';
+
+    var drawControl = new L.Control.Draw({
+        position: 'topright',
+        draw: {
+            polyline: false,
+            polygon: false,
+            circle: false,
+            marker: true
+        },
+        edit: {
+            featureGroup: drawnItems,
+            remove: true
+        }
+    });
+    map.addControl(drawControl);
+
+    map.on(L.Draw.Event.CREATED, function (e) {
+        var type = e.layerType,
+                layer = e.layer;
+
+        if (type === 'marker') {
+            layer.bindPopup('A popup!');
+        }
+
+        drawnItems.addLayer(layer);
+    });
+
+    map.on(L.Draw.Event.EDITED, function (e) {
+        var layers = e.layers;
+        var countOfEditedLayers = 0;
+        layers.eachLayer(function (layer) {
+            countOfEditedLayers++;
+        });
+        console.log("Edited " + countOfEditedLayers + " layers");
+    });
 
 
+
+
+// map.fitBounds([
+//     [40.712, -74.227],
+//     [40.774, -74.125]
+// ]);
+
+
+
+
+
+map.on('draw:created', function (e) {
+
+    var type = e.layerType,
+        layer = e.layer;
+
+    if (type === 'rectangle') {
+        layer.on('mouseover', function() {
+            // alert(layer.getLatLngs());  
+            map.fitBounds([layer.getLatLngs()])
+            drawnItems.removeLayer(e.layer);
+        });
+    }
+    
+    // drawnItems.addLayer(layer);
+});
+
+    // L.DomUtil.get('changeColor').onclick = function () {
+    //     drawControl.setDrawingOptions({rectangle: {shapeOptions: {color: '#004a80'}}});
+    // };
 
 
 
