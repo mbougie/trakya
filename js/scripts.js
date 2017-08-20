@@ -422,7 +422,7 @@ function getRadius(val) {
 
 
 function labelFunction(val){
-    return String(val) + "million"
+    return String(val)
 }
 
 
