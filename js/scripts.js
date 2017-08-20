@@ -17,6 +17,8 @@ var centroids
 var toggle;
 
 
+
+
 var satellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         minZoom: 10,
                  maxZoom: 14
@@ -36,9 +38,9 @@ var map = L.map('map', {
     zoomControl: false,
     minZoom: 6,
     maxZoom: 14,
-    layers: [crop_map],
+    layers: [satellite, crop_map]
     // maxBounds:[[40.712, -74.227],[40.774, -74.125]]
-    wheelPxPerZoomLevel: 150
+    // wheelPxPerZoomLevel: 150
 });
 
 
@@ -50,9 +52,9 @@ var overlayMaps = {
     "crop map": crop_map
 };
 
-
-satellite.addTo(map);
 toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map)
+// satellite.addTo(map);
+
 
 
 function getColor_state(state) {
@@ -358,7 +360,7 @@ function zoomToFeature(e) {
 }
 
 function zoomToFeature_county(e) {
-     toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
+     // toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);
     ////  function to remove/add layer control----it works!!!!
     //map.removeControl(toggle);
     console.log(map.getZoom())
