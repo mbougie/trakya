@@ -139,12 +139,16 @@ function getVisibleLayer_state() {
         // geojson.resetStyle()
         geojson.setStyle({fillOpacity :1.0})
         centroids.setStyle({fillOpacity :0.8})
-        // centroids.bindTooltip("my tooltip text",{
-//     permanent:false,
-//     direction:'center'
-// }).openTooltip();
-        // geojson.setStyle({fillColor :'yellow'})
- 
+
+
+        map.eachLayer(function(l) {
+                  if (l.getTooltip) {
+                    var toolTip = l.getTooltip();
+                    if (toolTip) {
+                      this.map.addLayer(toolTip);
+                    }
+                  }
+                })
         
     }
     else{
@@ -153,9 +157,22 @@ function getVisibleLayer_state() {
         // geojson.setOpacity(0.5)
         geojson.setStyle({fillOpacity :0.0})
         centroids.setStyle({fillOpacity :0.0})
+        // centroids.tooltip.option({opacity :0.0})
+        console.log(centroids)
+
+        // remove tooltip labels 
+        map.eachLayer(function(l) {
+          if (l.getTooltip) {
+            var toolTip = l.getTooltip();
+            if (toolTip) {
+              this.map.closeTooltip(toolTip);
+            }
+          }
+        })
 
     }
-    // var car = {type:"Fiat", model:"500", color:"white"};
+   
+
 }
 
 function getVisibleLayer_county() {
@@ -411,7 +428,7 @@ centroids = L.geoJson(centroids, {
             fillColor: '#e6e600',
             weight: 0,
             stroke: 0,
-            fillOpacity: .8,
+            fillOpacity: .6,
             radius: getRadius(feature.properties.acres_corn)
         })
         .bindTooltip(labelFunction(feature.properties.acres_corn), 
