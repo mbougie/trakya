@@ -139,6 +139,10 @@ function getVisibleLayer_state() {
         // geojson.resetStyle()
         geojson.setStyle({fillOpacity :1.0})
         centroids.setStyle({fillOpacity :0.8})
+        // centroids.bindTooltip("my tooltip text",{
+//     permanent:false,
+//     direction:'center'
+// }).openTooltip();
         // geojson.setStyle({fillColor :'yellow'})
  
         
@@ -191,8 +195,8 @@ function getVisibleLayer_control() {
      
         console.log('control not here so creating')
 
-       if ($('.leaflet-control-layers-expanded').is(':visible') === false){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
-       document.getElementById('legend').style.visibility='visible'
+       // if ($('.leaflet-control-layers-expanded').is(':visible') === false){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
+       // document.getElementById('legend').style.visibility='visible'
         // if($('.leaflet-control-layers-expanded').is(':hidden') === true){toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map);}
         // map.addLayer(geojson)
         // geojson.setOpacity(1.0)
@@ -211,9 +215,9 @@ function getVisibleLayer_control() {
         // toggle.removeFrom(map);
 
             
-console.log($('.leaflet-control-layers-expanded').is(':visible'))
-           if($('.leaflet-control-layers-expanded').is(':visible')){toggle.removeFrom(map)}
-            document.getElementById('legend').style.visibility='hidden'
+// console.log($('.leaflet-control-layers-expanded').is(':visible'))
+//            if($('.leaflet-control-layers-expanded').is(':visible')){toggle.removeFrom(map)}
+//             document.getElementById('legend').style.visibility='hidden'
         
         // plantit.setStyle({fillOpacity :0.0})
         // plantit.setStyle({opacity: 0.0})
@@ -393,6 +397,11 @@ function getRadius(val) {
 }
 
 
+function labelFunction(val){
+    return String(val) + "million"
+}
+
+
 // create a L.geoJson layer for COAL
 centroids = L.geoJson(centroids, {
     pointToLayer: function(feature, latlng) {
@@ -405,13 +414,22 @@ centroids = L.geoJson(centroids, {
             fillOpacity: .8,
             radius: getRadius(feature.properties.acres_corn)
         })
+        .bindTooltip(labelFunction(feature.properties.acres_corn), 
+    {
+        permanent: true, 
+        direction: 'center'
+    })
+
     }
 }).addTo(map);
 
 
 
 
-
+// centroids.bindTooltip("my tooltip text",{
+//     permanent:false,
+//     direction:'center'
+// }).openTooltip();
 
 
 

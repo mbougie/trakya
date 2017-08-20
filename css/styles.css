@@ -75,3 +75,13 @@ a.mapboxgl-ctrl-logo {
 }
 
 
+
+/*overwrite leaflet tool tip style*/
+.leaflet-tooltip {
+background-color: transparent;
+box-shadow:none;
+border:0;
+font-size: 200%;
+color:white;
+
+}
