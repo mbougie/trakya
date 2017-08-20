@@ -16,6 +16,7 @@ var plantit;
 var centroids
 var toggle;
 
+
 var satellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         minZoom: 10,
                  maxZoom: 14
@@ -32,6 +33,7 @@ var crop_map= L.tileLayer(
 var map = L.map('map', {
     center: [40.5,-88.7],
     zoom: 6,
+    zoomControl: false,
     minZoom: 6,
     maxZoom: 14,
     layers: [crop_map],
@@ -40,13 +42,17 @@ var map = L.map('map', {
 });
 
 
+var zoomHome = L.Control.zoomHome();
+zoomHome.addTo(map);
+
+
 var overlayMaps = {
     "crop map": crop_map
 };
 
 
 satellite.addTo(map);
-
+toggle = L.control.layers(null,overlayMaps,{collapsed:false}).addTo(map)
 
 
 function getColor_state(state) {
@@ -93,7 +99,7 @@ map.on('zoomend', function() {
     console.log(map.getZoom())
     getVisibleLayer_state();
    getVisibleLayer_county();
-  getVisibleLayer_control();
+  // getVisibleLayer_control();
     // if (map.getZoom() <= 7){
         
     //      if (map.hasLayer(plantit)) {
@@ -479,7 +485,7 @@ centroids = L.geoJson(centroids, {
     L.drawLocal.draw.toolbar.buttons.polygon = 'Draw a sexy polygon!';
 
     var drawControl = new L.Control.Draw({
-        position: 'topright',
+        position: 'topleft',
         draw: {
             polyline: false,
             polygon: false,
