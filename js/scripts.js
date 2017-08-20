@@ -21,13 +21,12 @@ var toggle;
 
 var satellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         minZoom: 10,
-                 maxZoom: 14
+        maxZoom: 14
     });
-var crop_map= L.tileLayer(
-            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy;  Contributors',
-                   minZoom: 10,
-         maxZoom: 14
+var crop_map= L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+// var crop_map = L.tileLayer('../tiles/{z}/{x}/{y}.png', {tms: true,
+        minZoom: 10,
+        maxZoom: 14
          });
 
 // var grayscale = L.tileLayer(mapboxUrl, {id: 'MapID', attribution: mapboxAttribution}),
