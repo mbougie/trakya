@@ -492,11 +492,13 @@ centroids = L.geoJson(centroids, {
             polyline: false,
             polygon: false,
             circle: false,
-            marker: true
+            circlemarker:false,
+            marker: false
         },
         edit: {
             featureGroup: drawnItems,
-            remove: true
+            remove: false,
+            edit: false
         }
     });
     map.addControl(drawControl);
@@ -512,14 +514,14 @@ centroids = L.geoJson(centroids, {
         drawnItems.addLayer(layer);
     });
 
-    map.on(L.Draw.Event.EDITED, function (e) {
-        var layers = e.layers;
-        var countOfEditedLayers = 0;
-        layers.eachLayer(function (layer) {
-            countOfEditedLayers++;
-        });
-        console.log("Edited " + countOfEditedLayers + " layers");
-    });
+    // map.on(L.Draw.Event.EDITED, function (e) {
+    //     var layers = e.layers;
+    //     var countOfEditedLayers = 0;
+    //     layers.eachLayer(function (layer) {
+    //         countOfEditedLayers++;
+    //     });
+    //     console.log("Edited " + countOfEditedLayers + " layers");
+    // });
 
 
 
