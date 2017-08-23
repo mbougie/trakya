@@ -15,6 +15,7 @@ var geojson;
 var plantit;
 var centroids
 var toggle;
+var legend;
 
 
 
@@ -380,11 +381,12 @@ function zoomToFeature_county(e) {
 
 
 function onEachFeature_state(feature, layer) {
-    layer.on({
+    // layer.on({
         // mouseover: highlightFeature_state,
         // mouseout: resetHighlight_state
         // click: zoomToFeature
-    });
+        layer.bindPopup('yo')
+    // });
 }
 
 function onEachFeature_county(feature, layer) {
@@ -444,7 +446,8 @@ centroids = L.geoJson(centroids, {
         direction: 'center'
     })
 
-    }
+    },
+    onEachFeature: onEachFeature_state
 }).addTo(map);
 
 
@@ -555,5 +558,23 @@ map.on('draw:created', function (e) {
     // };
 
 
+legend = L.control({position: 'bottomright'});
 
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        labels = [];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor_county(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(map);
 
