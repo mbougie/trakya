@@ -12,7 +12,7 @@ body * {
 }
 
 
-.legend {
+/*.legend {
   background-color: rgba(255,255,255,0.75);
   border-radius: 3px;
   bottom: 30px;
@@ -34,7 +34,7 @@ body * {
   height: 10px;
   margin-right: 5px;
   width: 10px;
-}
+}*/
 
 #map {
     position: absolute;
@@ -84,4 +84,18 @@ border:0;
 font-size: 300%;
 color:white;
 
+}
+
+
+.legend {
+    line-height: 18px;
+    color: #555;
+    opacity: 0.0;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
 }
