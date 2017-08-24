@@ -76,7 +76,7 @@ a.mapboxgl-ctrl-logo {
 
 
 
-/*overwrite leaflet tool tip style*/
+/*overwrite leaflet tool tip style to add labe to propritional symbol*/
 .leaflet-tooltip {
 background-color: transparent;
 box-shadow:none;
@@ -90,7 +90,7 @@ color:white;
 .legend {
     line-height: 18px;
     color: #555;
-    opacity: 0.0;
+    opacity: 0.8;
 }
 .legend i {
     width: 18px;

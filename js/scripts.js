@@ -195,7 +195,7 @@ function getVisibleLayer_county() {
         // geojson.resetStyle()
        plantit.setStyle({fillOpacity :1.0})
        plantit.setStyle({opacity: 1.0})
-       
+       map.addControl(legend)
    
         // geojson.setStyle({fillColor :'yellow'})
  
@@ -207,7 +207,9 @@ function getVisibleLayer_county() {
         // geojson.setOpacity(0.5)
         plantit.setStyle({fillOpacity :0.0})
         plantit.setStyle({opacity: 0.0})
-
+        map.removeControl(legend)
+        // document.getElementsByClassName("legend").style.backgroundColor="red";
+        // document.getElementById("myH1").style.color = "red";
 
     }
     // var car = {type:"Fiat", model:"500", color:"white"};
@@ -564,18 +566,18 @@ legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+        grades = [0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80],
         labels = [];
 
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < grades.length; i++) {
         div.innerHTML +=
-            '<i style="background:' + getColor_county(grades[i] + 1) + '"></i> ' +
+            '<i style="background:' + getColor_county(grades[i]) + '"></i> ' +
             grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
     }
 
     return div;
 };
 
-legend.addTo(map);
+
 
