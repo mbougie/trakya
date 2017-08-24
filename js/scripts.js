@@ -67,13 +67,13 @@ function getColor_state(state) {
 }
 
 function getColor_county(perc) {
-    return perc > 0.70 ? '#800026' :
-           perc> 0.60  ? '#BD0026' :
-           perc > 0.50  ? '#E31A1C' :
-           perc > 0.40  ? '#FC4E2A' :
-           perc > 0.30   ? '#FD8D3C' :
-           perc > 0.20   ? '#FEB24C' :
-           perc > 0.10   ? '#FED976' :
+    return perc >= 70 ? '#800026' :
+           perc>= 60  ? '#BD0026' :
+           perc >= 50  ? '#E31A1C' :
+           perc >= 40  ? '#FC4E2A' :
+           perc >= 30   ? '#FD8D3C' :
+           perc >= 20   ? '#FEB24C' :
+           perc >= 10   ? '#FED976' :
                       '#FFEDA0';
 }
 
@@ -90,11 +90,11 @@ function style_state(feature) {
 
 function style_county(feature) {
     return {
-        fillColor: getColor_county(feature.properties.CORN_PERC),
+        fillColor: getColor_county(feature.properties.CORN_PERC * 100),
         weight: 2,
-        opacity: 0.0,
+        opacity: 1.0,
         color: 'white',
-        fillOpacity: 0.0
+        fillOpacity: 1.0
     };
 }
 
@@ -193,21 +193,24 @@ function getVisibleLayer_county() {
         // map.addLayer(geojson)
         // geojson.setOpacity(1.0)
         // geojson.resetStyle()
-       plantit.setStyle({fillOpacity :1.0})
-       plantit.setStyle({opacity: 1.0})
+       // plantit.setStyle({fillOpacity :1.0})
+       // plantit.setStyle({opacity: 1.0})
+       plantit.addTo(map);
        map.addControl(legend)
+
    
-        // geojson.setStyle({fillColor :'yellow'})
- 
+   
         
     }
     else{
         console.log('county out of range so remove')
         // map.removeLayer(geojson)
         // geojson.setOpacity(0.5)
-        plantit.setStyle({fillOpacity :0.0})
-        plantit.setStyle({opacity: 0.0})
+        // plantit.setStyle({fillOpacity :0.0})
+        // plantit.setStyle({opacity: 0.0})
+        map.removeLayer(plantit)
         map.removeControl(legend)
+        
         // document.getElementsByClassName("legend").style.backgroundColor="red";
         // document.getElementById("myH1").style.color = "red";
 
@@ -265,14 +268,14 @@ console.log('control is visible', $('.leaflet-control-layers-expanded').is(':vis
 // }
 
 // function getColor(perc) {
-//     return perc > 0.70 ? '#800026' :
-//            perc> 0.60  ? '#BD0026' :
-//            perc > 0.50  ? '#E31A1C' :
-//            perc > 0.40  ? '#FC4E2A' :
-//            perc > 0.30   ? '#FD8D3C' :
-//            perc > 0.20   ? '#FEB24C' :
-//            perc > 0.10   ? '#FED976' :
-//                       '#FFEDA0';
+//     return perc > 0.60 ? '#800026' :
+//            perc> 0.50  ? '#BD0026' :
+//            perc > 0.40  ? '#E31A1C' :
+//            perc > 0.30  ? '#FC4E2A' :
+//            perc > 0.20   ? '#FD8D3C' :
+//            perc > 0.10   ? '#FEB24C' :
+//            perc > 0.00   ? '#FED976' :
+//                       'blue';
 // }
 
 
@@ -388,16 +391,17 @@ function onEachFeature_state(feature, layer) {
         // mouseover: highlightFeature_state,
         // mouseout: resetHighlight_state
         // click: zoomToFeature
-        layer.bindPopup('yo')
+        // layer.bindPopup('yo')
     // });
 }
 
 function onEachFeature_county(feature, layer) {
-    layer.on({
-        // mouseover: highlightFeature_county,
-        // mouseout: resetHighlight_county
-        // click: zoomToFeature_county
-    });
+ // layer.on({
+        // mouseover: highlightFeature_state,
+        // mouseout: resetHighlight_state
+        // click: zoomToFeature
+         layer.bindPopup('<b>Name: </b>' + feature.properties.ATLAS_NAME + '<br><b>Corn Percent: </b>'+ Math.round(feature.properties.CORN_PERC * 100));
+    // });
 }
 
 function yo(feature) {
@@ -411,24 +415,6 @@ geojson = L.geoJson(states, {
     style: style_state,
     onEachFeature: onEachFeature_state
 }).addTo(map);
-
-plantit=L.geoJson(ia, {
-            style: style_county,onEachFeature: onEachFeature_county
-            }).addTo(map);
-
-
-
-// function takes a value and returns the radius of a circleMarker
-function getRadius(val) {
-    // var radius = Math.sqrt(val / Math.PI);
-    // return radius * .8;
-    return val * 8
-}
-
-
-function labelFunction(val){
-    return String(val)
-}
 
 
 // create a L.geoJson layer for COAL
@@ -449,9 +435,31 @@ centroids = L.geoJson(centroids, {
         direction: 'center'
     })
 
-    },
-    onEachFeature: onEachFeature_state
+    }
 }).addTo(map);
+
+
+plantit=L.geoJson(ia, {
+            style: style_county,onEachFeature: onEachFeature_county,
+            onEachFeature: onEachFeature_county
+            })
+
+
+
+// function takes a value and returns the radius of a circleMarker
+function getRadius(val) {
+    // var radius = Math.sqrt(val / Math.PI);
+    // return radius * .8;
+    return val * 8
+}
+
+
+function labelFunction(val){
+    return String(val)
+}
+
+
+
 
 
 
@@ -566,7 +574,7 @@ legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend'),
-        grades = [0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80],
+        grades = [0, 10, 20, 30, 40],
         labels = [];
 
     // loop through our density intervals and generate a label with a colored square for each interval
