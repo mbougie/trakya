@@ -23,8 +23,8 @@ var satellite = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services
         minZoom: 10,
         maxZoom: 14
     });
-var crop_map= L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-// var crop_map = L.tileLayer('../tiles/{z}/{x}/{y}.png', {tms: true,
+// var crop_map= L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+var crop_map = L.tileLayer('../tiles/{z}/{x}/{y}.png', {tms: true,
         minZoom: 10,
         maxZoom: 14
          });
