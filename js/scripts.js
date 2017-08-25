@@ -161,7 +161,7 @@ function getVisibleLayer_state() {
                 })
 
 
-        map.dragging.disable();
+        // map.dragging.disable();
         
     }
     else{
@@ -185,7 +185,7 @@ function getVisibleLayer_state() {
           }
         })
 
-        map.dragging.enable();
+        // map.dragging.enable();
 
     }
    
