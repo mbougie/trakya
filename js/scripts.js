@@ -319,20 +319,23 @@ function highlightFeature_state(e) {
     }
 }
 
+
+var highlightbox
 function highlightFeature_county(e) {
-    var layer = e.target;
+    if(highlightbox){plantit.resetStyle(highlightbox);}
     
-    layer.setStyle({
+    highlightbox = e.target;
+    highlightbox.setStyle({
         weight: 5,
         color: '#666',
         dashArray: '',
         fillOpacity: 1.0
     });
 
-    info.update(layer.feature.properties)
+    // info.update(layer.feature.properties)
 
     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-        layer.bringToFront();
+        highlightbox.bringToFront();
     }
 }
 
@@ -340,7 +343,7 @@ function highlightFeature_county(e) {
 
 function resetHighlight_county(e) {
     plantit.resetStyle(e.target);
-    info.update();
+    // info.update();
      
 }
 
@@ -398,12 +401,13 @@ function onEachFeature_state(feature, layer) {
 }
 
 function onEachFeature_county(feature, layer) {
- // layer.on({
+ layer.on({
         // mouseover: highlightFeature_state,
         // mouseout: resetHighlight_state
-        // click: zoomToFeature
-         layer.bindPopup('<b>Name: </b>' + feature.properties.ATLAS_NAME + '<br><b>Corn Percent: </b>'+ Math.round(feature.properties.CORN_PERC * 100));
-    // });
+         click: highlightFeature_county
+         
+    }),
+    layer.bindPopup('<b>Name: </b>' + feature.properties.ATLAS_NAME + '<br><b>Corn Percent: </b>'+ Math.round(feature.properties.CORN_PERC * 100));
 }
 
 function yo(feature) {
