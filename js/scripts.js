@@ -146,8 +146,8 @@ function getVisibleLayer_state() {
         // map.addLayer(geojson)
         // geojson.setOpacity(1.0)
         // geojson.resetStyle()
-        geojson.setStyle({fillOpacity :1.0})
-        centroids.setStyle({fillOpacity :0.5})
+        geojson.addTo(map);
+        centroids.addTo(map);
 
 
         map.eachLayer(function(l) {
@@ -164,8 +164,10 @@ function getVisibleLayer_state() {
         console.log('state out of range so remove')
         // map.removeLayer(geojson)
         // geojson.setOpacity(0.5)
-        geojson.setStyle({fillOpacity :0.0})
-        centroids.setStyle({fillOpacity :0.0})
+        // geojson.setStyle({fillOpacity :0.0})
+        // centroids.setStyle({fillOpacity :0.0})
+        map.removeLayer(geojson)
+        map.removeLayer(centroids)
         // centroids.tooltip.option({opacity :0.0})
         console.log(centroids)
 
