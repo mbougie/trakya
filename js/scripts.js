@@ -601,7 +601,9 @@ legend.onAdd = function (map) {
 };
 
 // dissable panning at intial scale
- map.dragging.disable();
+// map.dragging.disable();
+
+
 // map.on('click', function(e) {
 //     alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
 // });
