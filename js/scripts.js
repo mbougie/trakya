@@ -328,7 +328,7 @@ function highlightFeature_county(e) {
     highlightbox = e.target;
     highlightbox.setStyle({
         weight: 5,
-        color: '#666',
+        color: 'cyan',
         dashArray: '',
         fillOpacity: 1.0
     });
