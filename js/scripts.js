@@ -212,6 +212,7 @@ function getVisibleLayer_county() {
         // plantit.setStyle({opacity: 0.0})
         map.removeLayer(plantit)
         map.removeControl(legend)
+        plantit.resetStyle(highlightbox)
         
         // document.getElementsByClassName("legend").style.backgroundColor="red";
         // document.getElementById("myH1").style.color = "red";
