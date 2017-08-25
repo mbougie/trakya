@@ -406,8 +406,8 @@ function onEachFeature_county(feature, layer) {
         // mouseout: resetHighlight_state
          click: highlightFeature_county
          
-    }),
-    layer.bindPopup('<b>Name: </b>' + feature.properties.ATLAS_NAME + '<br><b>Corn Percent: </b>'+ Math.round(feature.properties.CORN_PERC * 100));
+    })
+    // layer.bindPopup('<b>Name: </b>' + feature.properties.ATLAS_NAME + '<br><b>Corn Percent: </b>'+ Math.round(feature.properties.CORN_PERC * 100));
 }
 
 function yo(feature) {
