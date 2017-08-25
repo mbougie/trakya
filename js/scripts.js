@@ -39,8 +39,9 @@ var map = L.map('map', {
     zoomControl: false,
     minZoom: 6,
     maxZoom: 14,
-    layers: [satellite, crop_map]
-    // maxBounds:[[40.712, -74.227],[40.774, -74.125]]
+    // zoomDelta:2,
+    layers: [satellite, crop_map],
+    maxBounds:[[47.28, -104.46],[33.31, -73.32]]
     // wheelPxPerZoomLevel: 150
 });
 
@@ -158,6 +159,9 @@ function getVisibleLayer_state() {
                     }
                   }
                 })
+
+
+        map.dragging.disable();
         
     }
     else{
@@ -180,6 +184,8 @@ function getVisibleLayer_state() {
             }
           }
         })
+
+        map.dragging.enable();
 
     }
    
@@ -593,6 +599,16 @@ legend.onAdd = function (map) {
 
     return div;
 };
+
+// dissable panning at intial scale
+ map.dragging.disable();
+// map.on('click', function(e) {
+//     alert("Lat, Lon : " + e.latlng.lat + ", " + e.latlng.lng)
+// });
+
+
+
+
 
 
 
